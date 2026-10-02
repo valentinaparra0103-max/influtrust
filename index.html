@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InfluTrust — Transparencia que genera confianza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a1535;
+    --navy-2:#0d1a40;
+    --blue:#2d8fe0;
+    --blue-light:#5aa9ec;
+    --teal:#1bc9c9;
+    --green:#22b07a;
+    --bg:#f5f7fb;
+    --white:#ffffff;
+    --text-dark:#0a1535;
+    --text-muted:#5b6478;
+    --border:#e3e7f0;
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--text-dark);
+    background:var(--bg);
+    line-height:1.5;
+  }
+  section, .hero-section{scroll-margin-top:78px;}
+
+  /* ===== BOTÓN FLOTANTE DE NAVEGACIÓN RÁPIDA ===== */
+  .quicknav-wrap{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    z-index:60;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:10px;
+  }
+  .quicknav-panel{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:0 14px 38px rgba(10,21,53,.22);
+    padding:10px;
+    display:none;
+    flex-direction:column;
+    min-width:200px;
+    overflow:hidden;
+  }
+  .quicknav-panel.open{display:flex;}
+  .quicknav-panel a{
+    padding:10px 14px;
+    border-radius:8px;
+    font-size:.86rem;
+    font-weight:600;
+    color:var(--text-dark);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .quicknav-panel a:hover{background:var(--bg); color:var(--blue);}
+  .quicknav-panel a.active-link{color:var(--blue); background:#eaf3fd;}
+  .quicknav-divider{height:1px; background:var(--border); margin:6px 4px;}
+  .quicknav-btn{
+    width:54px;height:54px;
+    border-radius:50%;
+    background:var(--blue);
+    color:#fff;
+    border:none;
+    box-shadow:0 14px 30px rgba(45,143,224,.45);
+    font-size:1.3rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:transform .2s ease, opacity .2s ease;
+  }
+  .quicknav-btn:hover{transform:translateY(-2px);}
+  .quicknav-wrap.hidden .quicknav-btn{
+    opacity:0;
+    pointer-events:none;
+    transform:scale(.8);
+  }
+  h1,h2,h3,h4{font-family:'Poppins',sans-serif;}
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  .container{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+  section{padding:72px 0;}
+
+  /* ===== HEADER / HERO ===== */
+  .hero-section{
+    background:linear-gradient(180deg,var(--navy) 0%, var(--navy-2) 100%);
+    position:relative;
+    overflow:hidden;
+    color:#fff;
+    padding-bottom:90px;
+  }
+  .hero-section::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      radial-gradient(circle at 85% 10%, rgba(45,143,224,.18), transparent 40%),
+      radial-gradient(circle at 95% 30%, rgba(27,201,201,.12), transparent 35%);
+    pointer-events:none;
+  }
+  .navbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:28px 0 0;
+    position:relative;
+    z-index:2;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:1.5rem;
+    font-weight:700;
+  }
+  .logo-icon{
+    width:34px;height:34px;
+    border-radius:50%;
+    border:2.5px solid var(--teal);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--teal);
+    font-size:1rem;
+  }
+  .nav-links{
+    display:flex;
+    gap:28px;
+    font-size:.95rem;
+    font-weight:500;
+  }
+  .nav-links a{opacity:.92; transition:opacity .2s;}
+  .nav-links a:hover{opacity:1; color:var(--teal);}
+  .menu-toggle{
+    display:none;
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:1rem;
+    cursor:pointer;
+    gap:8px;
+    align-items:center;
+    z-index:50;
+    position:relative;
+  }
+  .menu-toggle .bar-icon{
+    display:inline-flex;
+    flex-direction:column;
+    gap:4px;
+    width:20px;
+  }
+  .menu-toggle .bar-icon span{
+    display:block;
+    height:2px;
+    width:100%;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .menu-toggle.open .bar-icon span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  .menu-toggle.open .bar-icon span:nth-child(2){opacity:0;}
+  .menu-toggle.open .bar-icon span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+  /* Menú móvil desplegable */
+  .mobile-menu{
+    display:block;
+    position:fixed;
+    top:0; right:0;
+    width:78%;
+    max-width:320px;
+    height:100vh;
+    background:var(--navy-2);
+    box-shadow:-10px 0 40px rgba(0,0,0,.4);
+    z-index:40;
+    padding:90px 32px 32px;
+    transform:translateX(110%);
+    visibility:hidden;
+    transition:transform .3s ease, visibility .3s;
+  }
+  .mobile-menu.open{transform:translateX(0); visibility:visible;}
+  .mobile-menu ul{display:flex; flex-direction:column; gap:6px;}
+  .mobile-menu a{
+    display:block;
+    color:#fff;
+    font-size:1.05rem;
+    font-weight:600;
+    padding:14px 6px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    cursor:pointer;
+  }
+  .mobile-menu a:active, .mobile-menu a.active-link{color:var(--teal);}
+  .menu-overlay{
+    display:block;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:30;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .menu-overlay.open{opacity:1; pointer-events:all;}
+
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:48px;
+    align-items:center;
+    margin-top:64px;
+    position:relative;
+    z-index:2;
+  }
+  .hero-text h1{
+    font-size:2.7rem;
+    font-weight:800;
+    line-height:1.2;
+    margin-bottom:22px;
+  }
+  .hero-text h1 span{color:var(--blue-light);}
+  .hero-text p{
+    color:#c7cfe6;
+    font-size:1rem;
+    max-width:440px;
+    margin-bottom:30px;
+  }
+  .hero-buttons{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    padding:13px 26px;
+    border-radius:30px;
+    font-weight:600;
+    font-size:.92rem;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:none;
+    transition:opacity .2s, transform .15s;
+  }
+  .btn:hover{opacity:.88; transform:translateY(-1px);}
+  .btn-primary{
+    background:var(--blue);
+    color:#fff;
+  }
+  .btn-outline{
+    background:transparent;
+    border:1.5px solid rgba(255,255,255,.6);
+    color:#fff;
+  }
+
+  /* ===== HERO CARD (Instagram mock) ===== */
+  .hero-card-wrap{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .insta-card{
+    background:#fff;
+    border-radius:var(--radius);
+    color:var(--text-dark);
+    width:300px;
+    padding:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+  }
+  .insta-head{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .insta-avatar{
+    width:46px;height:46px;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+  }
+  .insta-head h4{font-size:.92rem; font-weight:600;}
+  .insta-head p{font-size:.78rem; color:var(--text-muted); margin-top:2px;}
+  .insta-head p b{color:var(--blue); font-weight:600;}
+  .insta-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:#e9f9f1;
+    color:var(--green);
+    font-size:.74rem;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:20px;
+    margin-bottom:12px;
+  }
+  .insta-card p.caption{
+    font-size:.85rem;
+    color:#333;
+    margin-bottom:14px;
+  }
+  .insta-actions{
+    display:flex;
+    gap:14px;
+    color:#888;
+    border-top:1px solid #eee;
+    padding-top:12px;
+    font-size:1.05rem;
+  }
+  .insta-actions span:first-child{color:#e0445b;}
+
+  .trust-card{
+    background:#fff;
+    border-radius:var(--radius);
+    color:var(--text-dark);
+    width:190px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+    margin-top:8px;
+  }
+  .trust-card h5{font-size:.78rem; font-weight:600; margin-bottom:10px; color:#333;}
+  .trust-ring{
+    width:78px;height:78px;
+    border-radius:50%;
+    border:7px solid var(--blue);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 8px;
+    font-weight:700;
+    font-size:1rem;
+    color:var(--text-dark);
+  }
+  .trust-card .label-green{
+    color:var(--green);
+    font-weight:700;
+    font-size:.82rem;
+    margin-bottom:14px;
+  }
+  .trust-list{
+    text-align:left;
+    font-size:.72rem;
+    color:#444;
+  }
+  .trust-list li{
+    display:flex;
+    gap:6px;
+    align-items:flex-start;
+    margin-bottom:8px;
+    line-height:1.3;
+  }
+  .trust-list li::before{
+    content:"✓";
+    color:var(--green);
+    font-weight:700;
+    flex-shrink:0;
+  }
+
+  /* ===== SOBRE NOSOTROS ===== */
+  .section-title{
+    font-size:1.9rem;
+    font-weight:700;
+    margin-bottom:8px;
+    position:relative;
+    display:inline-block;
+  }
+  .section-title::after{
+    content:"";
+    display:block;
+    width:54px;
+    height:4px;
+    background:var(--blue);
+    border-radius:4px;
+    margin-top:10px;
+  }
+  .section-title.center{display:block; text-align:center; margin:0 auto 50px;}
+  .section-title.center::after{margin-left:auto; margin-right:auto;}
+
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:50px;
+    align-items:flex-start;
+    margin-top:30px;
+  }
+  .about-grid > div:first-child p{
+    color:var(--text-muted);
+    font-size:.96rem;
+    margin-top:18px;
+  }
+  .value-cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+  .value-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:26px 20px;
+    text-align:center;
+  }
+  .value-icon{
+    width:54px;height:54px;
+    border-radius:50%;
+    background:#eaf3fd;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;
+    font-size:1.4rem;
+    color:var(--blue);
+  }
+  .value-card h4{font-size:1rem; margin-bottom:10px; font-weight:600;}
+  .value-card p{font-size:.84rem; color:var(--text-muted);}
+
+  /* ===== SERVICIOS ===== */
+  .services{background:#fff;}
+  .services-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .arrow-btn{
+    width:38px;height:38px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--text-muted);
+    flex-shrink:0;
+    font-size:1rem;
+  }
+  .service-cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    flex:1;
+  }
+  .service-card{
+    background:var(--bg);
+    border-radius:var(--radius);
+    padding:26px 18px;
+    text-align:center;
+  }
+  .service-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;
+    font-size:1.3rem;
+  }
+  .service-card:nth-child(1) .service-icon{background:#eee6fb; color:#8453d6;}
+  .service-card:nth-child(2) .service-icon{background:#fde8e8; color:#e0566f;}
+  .service-card:nth-child(3) .service-icon{background:#e6f6f0; color:#1ea97c;}
+  .service-card:nth-child(4) .service-icon{background:#fdeee0; color:#e88a3a;}
+  .service-card h4{font-size:.94rem; font-weight:600; margin-bottom:10px;}
+  .service-card p{font-size:.8rem; color:var(--text-muted);}
+
+  /* ===== ETAPAS ===== */
+  .etapas-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+    margin-top:20px;
+  }
+  .etapa-card{
+    background:var(--navy);
+    border-radius:var(--radius);
+    padding:26px 22px;
+    color:#fff;
+  }
+  .etapa-num{
+    width:32px;height:32px;
+    border-radius:50%;
+    background:var(--blue);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:.85rem;
+    margin-bottom:14px;
+  }
+  .etapa-card h4{font-size:.96rem; font-weight:600; margin-bottom:8px;}
+  .etapa-card p{font-size:.8rem; color:#aab2c9;}
+
+  /* ===== TESTIMONIOS ===== */
+  .testimonios{
+    background:linear-gradient(180deg,var(--navy) 0%, var(--navy-2) 100%);
+    color:#fff;
+  }
+  .testimonios .section-title.center{color:#fff;}
+  .testi-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  .testi-card{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:var(--radius);
+    padding:26px 22px;
+    position:relative;
+  }
+  .quote-mark{
+    font-size:2.2rem;
+    color:var(--blue-light);
+    font-family:Georgia, serif;
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .testi-person{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:14px;
+  }
+  .testi-person img{
+    width:46px;height:46px;
+    border-radius:50%;
+    object-fit:cover;
+  }
+  .testi-person h5{font-size:.9rem; font-weight:600;}
+  .testi-person span{font-size:.74rem; color:#9aa4c0;}
+  .stars{color:#ffb83d; font-size:.78rem; margin-top:3px;}
+  .testi-card p.quote{font-size:.85rem; color:#c7cfe6; line-height:1.5;}
+
+  /* ===== CONTACTO ===== */
+  .contact-grid{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:60px;
+  }
+  .contact-info h2{font-size:1.7rem; font-weight:700; margin-bottom:6px;}
+  .contact-info > p{color:var(--text-muted); margin-bottom:30px; font-size:.95rem;}
+  .contact-item{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    margin-bottom:22px;
+  }
+  .contact-icon{
+    width:38px;height:38px;
+    border-radius:50%;
+    background:#eaf3fd;
+    color:var(--blue);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .contact-item h5{font-size:.85rem; font-weight:600; margin-bottom:2px;}
+  .contact-item p{font-size:.85rem; color:var(--text-muted);}
+  .socials{margin-top:30px;}
+  .socials h5{font-size:.85rem; font-weight:600; margin-bottom:12px;}
+  .social-icons{display:flex; gap:12px;}
+  .social-icons span{
+    width:38px;height:38px;
+    border-radius:50%;
+    background:var(--navy);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.85rem;
+  }
+
+  .contact-form{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:30px;
+  }
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px;}
+  .form-group label{
+    display:block;
+    font-size:.82rem;
+    font-weight:600;
+    margin-bottom:7px;
+  }
+  .form-group input, .form-group textarea{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:11px 14px;
+    font-size:.86rem;
+    font-family:inherit;
+    color:var(--text-dark);
+    background:#fafbfd;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder{color:#a7adbd;}
+  .form-group textarea{resize:none; height:90px; margin-bottom:20px;}
+  .form-group{margin-bottom:0;}
+  .send-btn{
+    background:var(--blue);
+    color:#fff;
+    border:none;
+    padding:13px 30px;
+    border-radius:30px;
+    font-weight:600;
+    font-size:.9rem;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    transition:background .2s, transform .15s;
+  }
+  .send-btn:hover{background:#2278c2; transform:translateY(-1px);}
+  .send-btn:disabled{background:#9ab8d8; cursor:not-allowed; transform:none;}
+
+  /* Validación visual de campos */
+  .form-group input:focus, .form-group textarea:focus{
+    outline:none;
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(45,143,224,.15);
+  }
+  .form-group input.field-error, .form-group textarea.field-error{
+    border-color:#e0445b;
+    box-shadow:0 0 0 3px rgba(224,68,91,.12);
+  }
+  .field-error-msg{
+    color:#e0445b;
+    font-size:.75rem;
+    margin-top:5px;
+    display:block;
+  }
+
+  /* Mensaje de confirmación */
+  .form-success{
+    display:none;
+    background:#e9f9f1;
+    border:1.5px solid var(--green);
+    border-radius:12px;
+    padding:22px 24px;
+    text-align:center;
+    margin-top:18px;
+  }
+  .form-success.visible{display:block;}
+  .form-success .success-icon{
+    font-size:2.2rem;
+    margin-bottom:10px;
+  }
+  .form-success p{
+    color:#0f6644;
+    font-weight:600;
+    font-size:.95rem;
+    line-height:1.5;
+  }
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:var(--navy);
+    color:#8e96b3;
+    text-align:center;
+    padding:22px 0;
+    font-size:.78rem;
+  }
+  footer .foot-links{
+    margin-top:6px;
+    display:flex;
+    gap:16px;
+    justify-content:center;
+  }
+  footer .foot-links a{color:#8e96b3;}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 980px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-card-wrap{justify-content:center; flex-wrap:wrap;}
+    .about-grid{grid-template-columns:1fr;}
+    .value-cards{grid-template-columns:1fr 1fr;}
+    .service-cards{grid-template-columns:1fr 1fr;}
+    .etapas-grid{grid-template-columns:1fr 1fr;}
+    .testi-grid{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width: 700px){
+    .nav-links{display:none;}
+    .menu-toggle{display:flex;}
+    .hero-text h1{font-size:2.1rem;}
+    .value-cards{grid-template-columns:1fr;}
+    .service-cards{grid-template-columns:1fr;}
+    .services-row{flex-direction:column;}
+    .arrow-btn{display:none;}
+    .etapas-grid{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .container{padding:0 20px;}
+    section{padding:50px 0;}
+    .insta-card{width:100%;}
+    .trust-card{width:100%;}
+    .hero-card-wrap{flex-direction:column; align-items:stretch;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero-section" id="inicio">
+  <div class="container">
+    <nav class="navbar">
+      <div class="logo">
+        <span class="logo-icon">✓</span>
+        InfluTrust
+      </div>
+      <ul class="nav-links">
+        <li><a href="#inicio" class="nav-link">Inicio</a></li>
+        <li><a href="#sobre-nosotros" class="nav-link">Sobre nosotros</a></li>
+        <li><a href="#servicios" class="nav-link">Servicios</a></li>
+        <li><a href="#etapas" class="nav-link">Etapas</a></li>
+        <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
+        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+      </ul>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span class="bar-icon"><span></span><span></span><span></span></span>
+        Menú
+      </button>
+    </nav>
+  </div>
+
+  <!-- Menú móvil desplegable -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#inicio" class="nav-link">Inicio</a></li>
+      <li><a href="#sobre-nosotros" class="nav-link">Sobre nosotros</a></li>
+      <li><a href="#servicios" class="nav-link">Servicios</a></li>
+      <li><a href="#etapas" class="nav-link">Etapas</a></li>
+      <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
+      <li><a href="#contacto" class="nav-link">Contacto</a></li>
+    </ul>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <div class="container">
+
+    <div class="hero-grid">
+      <div class="hero-text">
+        <h1>Transparencia que genera <span>confianza</span></h1>
+        <p>En InfluTrust ayudamos a marcas e influencers a comunicar colaboraciones de forma clara, auténtica y responsable. Porque la confianza se construye con transparencia.</p>
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="#sobre-nosotros">Conoce más &nbsp;→</a>
+          <a class="btn btn-outline" href="#contacto">Solicitar asesoría</a>
+        </div>
+      </div>
+
+      <div class="hero-card-wrap">
+        <div class="insta-card">
+          <div class="insta-head">
+            <img class="insta-avatar" src="https://i.pravatar.cc/100?img=47" alt="Lucía Martínez">
+            <div>
+              <h4>@lucia.martinez</h4>
+              <p>Colaboración pagada con <b>@GlowSkin</b></p>
+            </div>
+          </div>
+          <span class="insta-tag">✓ Contenido transparente</span>
+          <p class="caption">Recomendación basada en mi experiencial real con el producto</p>
+          <div class="insta-actions">
+            <span>♥</span><span>💬</span><span>✈</span><span style="margin-left:auto;">🔖</span>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <h5>Resumen de transparencia</h5>
+          <div class="trust-ring">100%</div>
+          <div class="label-green">Transparente</div>
+          <ul class="trust-list">
+            <li>Relación comercial identificada</li>
+            <li>Mensajes claros y visibles</li>
+            <li>Auditoría completa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SOBRE NOSOTROS ===== -->
+<section id="sobre-nosotros">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <h2 class="section-title">Sobre Nosotros</h2>
+        <p>InfluTrust es una consultora y solución especializada en transparencia en marketing de influencers. Trabajamos junto a marcas, creadores de contenido y audiencias para fomentar relaciones más auténticas, responsables y alineadas con las mejores prácticas del mercado.</p>
+      </div>
+      <div class="value-cards">
+        <div class="value-card">
+          <div class="value-icon">🛡</div>
+          <h4>Autenticidad</h4>
+          <p>Promovemos colaboraciones reales y coherentes con los valores de cada marca e influencer.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h4>Confianza</h4>
+          <p>Construimos relaciones sólidas entre marcas, creadores y audiencias, basadas en la honestidad.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">📋</div>
+          <h4>Claridad</h4>
+          <p>Comunicaciones claras y visibles que permiten decisiones informadas y responsables.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICIOS ===== -->
+<section id="servicios" class="services">
+  <div class="container">
+    <h2 class="section-title center">Servicios</h2>
+    <div class="services-row">
+      <button class="arrow-btn">‹</button>
+      <div class="service-cards">
+        <div class="service-card">
+          <div class="service-icon">📖</div>
+          <h4>Manual para influencers</h4>
+          <p>Guías prácticas con lineamientos de transparencia, ejemplos y recomendaciones para comunicar colaboraciones correctamente.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🏷</div>
+          <h4>Señalización de contenido</h4>
+          <p>Implementación de etiquetas y avisos claros para identificar contenido patrocinado de acuerdo con las mejores prácticas.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🔍</div>
+          <h4>Auditoría de campañas</h4>
+          <p>Evaluamos campañas de influencer marketing para asegurar cumplimiento, transparencia y coherencia en la comunicación.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💡</div>
+          <h4>Asesoría estratégica</h4>
+          <p>Acompañamos a marcas y influencers con estrategias de transparencia alineadas a sus objetivos y audiencia.</p>
+        </div>
+      </div>
+      <button class="arrow-btn">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ETAPAS ===== -->
+<section id="etapas">
+  <div class="container">
+    <h2 class="section-title center">Etapas</h2>
+    <div class="etapas-grid">
+      <div class="etapa-card">
+        <div class="etapa-num">1</div>
+        <h4>Diagnóstico inicial</h4>
+        <p>Analizamos la comunicación digital de la marca o influencer para identificar oportunidades de mejora en transparencia, autenticidad y confianza.</p>
+      </div>
+      <div class="etapa-card">
+        <div class="etapa-num">2</div>
+        <h4>Auditoría de contenido</h4>
+        <p>Revisamos campañas, publicaciones y colaboraciones para evaluar la claridad del contenido patrocinado y el cumplimiento de buenas prácticas publicitarias.</p>
+      </div>
+      <div class="etapa-card">
+        <div class="etapa-num">3</div>
+        <h4>Diseño de estrategia</h4>
+        <p>Creamos estrategias personalizadas orientadas a fortalecer la comunicación ética y la relación entre marcas, creadores y audiencias.</p>
+      </div>
+      <div class="etapa-card">
+        <div class="etapa-num">4</div>
+        <h4>Implementación de soluciones</h4>
+        <p>Desarrollamos e implementamos herramientas y recursos adaptados a las necesidades de cada cliente para optimizar la transparencia y autenticidad de sus campañas digitales.</p>
+      </div>
+      <div class="etapa-card">
+        <div class="etapa-num">5</div>
+        <h4>Capacitación y acompañamiento</h4>
+        <p>Asesoramos a marcas e influencers en comunicación transparente, gestión responsable de colaboraciones y construcción de credibilidad digital.</p>
+      </div>
+      <div class="etapa-card">
+        <div class="etapa-num">6</div>
+        <h4>Evaluación y seguimiento</h4>
+        <p>Monitoreamos los resultados de las estrategias implementadas para medir su impacto y fortalecer continuamente la confianza de la audiencia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIOS ===== -->
+<section id="testimonios" class="testimonios">
+  <div class="container">
+    <h2 class="section-title center">Testimonios</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="quote-mark">"</div>
+        <div class="testi-person">
+          <img src="https://i.pravatar.cc/100?img=32" alt="María Fernanda Ruiz">
+          <div>
+            <h5>María Fernanda Ruiz</h5>
+            <span>Marca GlowSkin</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="quote">Trabajar con InfluTrust nos dio la claridad y seguridad que necesitábamos para comunicar nuestras colaboraciones de forma transparente y generar la confianza de nuestra audiencia.</p>
+      </div>
+      <div class="testi-card">
+        <div class="quote-mark">"</div>
+        <div class="testi-person">
+          <img src="https://i.pravatar.cc/100?img=15" alt="Alejandro Arango">
+          <div>
+            <h5>Alejandro Arango</h5>
+            <span>Creador de contenido</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="quote">El manual para influencers nos ayudó a cambiar la forma en que trabajamos con marcas. Ahora más comunidad confía en nosotros con más claridad y valor.</p>
+      </div>
+      <div class="testi-card">
+        <div class="quote-mark">"</div>
+        <div class="testi-person">
+          <img src="https://i.pravatar.cc/100?img=44" alt="Andrea Gómez">
+          <div>
+            <h5>Andrea Gómez</h5>
+            <span>Directora de Marca Naturé</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="quote">La auditoría de campañas nos ayudó a identificar oportunidades y a elevar el nivel de transparencia de todas nuestras colaboraciones.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACTO ===== -->
+<section id="contacto">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2>Contacto</h2>
+        <p>¿Listo para construir confianza? Hablemos.</p>
+
+        <div class="contact-item">
+          <div class="contact-icon">✉</div>
+          <div>
+            <h5>Email</h5>
+            <p>hola@influtrust.com.co</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h5>Teléfono</h5>
+            <p>+57 322 2448075</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h5>Ubicación</h5>
+            <p>Bogotá, Colombia</p>
+          </div>
+        </div>
+
+        <div class="socials">
+          <h5>Síguenos en redes</h5>
+          <div class="social-icons">
+            <span>📷</span><span>f</span><span>𝕏</span><span>♪</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <form id="contactForm" novalidate>
+          <!-- Honeypot antispam (campo oculto, los bots lo llenan, Formspree lo detecta) -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+          <!-- Redirigir a la misma página después del envío (sin salir) -->
+          <input type="hidden" name="_next" value="">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contactNombre">Nombre</label>
+              <input type="text" id="contactNombre" name="nombre" placeholder="Tu nombre" autocomplete="name">
+              <span class="field-error-msg" id="errorNombre"></span>
+            </div>
+            <div class="form-group">
+              <label for="contactCorreo">Correo</label>
+              <input type="email" id="contactCorreo" name="correo" placeholder="tu@correo.com" autocomplete="email">
+              <span class="field-error-msg" id="errorCorreo"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contactMensaje">Mensaje</label>
+            <textarea id="contactMensaje" name="mensaje" placeholder="Escribe tu mensaje aquí..."></textarea>
+            <span class="field-error-msg" id="errorMensaje"></span>
+          </div>
+          <button type="submit" class="send-btn" id="sendBtn">Enviar &nbsp;✈</button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">✅</div>
+          <p>¡Gracias por contactarnos! Hemos recibido tu información y nos comunicaremos contigo próximamente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>© 2026 InfluTrust</p>
+  <div class="foot-links">
+    <a href="#">Términos y condiciones</a>
+    <a href="#">Política de privacidad</a>
+    <a href="#">Aviso legal</a>
+  </div>
+</footer>
+
+<!-- ===== NAVEGACIÓN RÁPIDA FLOTANTE ===== -->
+<div class="quicknav-wrap" id="quicknavWrap">
+  <div class="quicknav-panel" id="quicknavPanel">
+    <a href="#inicio" class="nav-link">🏠 Inicio</a>
+    <a href="#sobre-nosotros" class="nav-link">ℹ️ Sobre nosotros</a>
+    <a href="#servicios" class="nav-link">🛠️ Servicios</a>
+    <a href="#etapas" class="nav-link">🔢 Etapas</a>
+    <a href="#testimonios" class="nav-link">💬 Testimonios</a>
+    <a href="#contacto" class="nav-link">✉️ Contacto</a>
+    <div class="quicknav-divider"></div>
+    <a href="#inicio" id="backToTop">⬆️ Volver arriba</a>
+  </div>
+  <button class="quicknav-btn" id="quicknavBtn" aria-label="Abrir navegación rápida">☰</button>
+</div>
+
+<script>
+  /* ================================================
+     INFLUTRUST — PMV · JavaScript funcional
+  ================================================ */
+
+  // ===== 1. MENÚ HAMBURGUESA (MÓVIL) =====
+  const menuToggle  = document.getElementById('menuToggle');
+  const mobileMenu  = document.getElementById('mobileMenu');
+  const menuOverlay = document.getElementById('menuOverlay');
+
+  function closeMobileMenu() {
+    menuToggle.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    mobileMenu.classList.remove('open');
+    menuOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function openMobileMenu() {
+    menuToggle.classList.add('open');
+    menuToggle.setAttribute('aria-expanded', 'true');
+    mobileMenu.classList.add('open');
+    menuOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden'; // evita scroll de fondo mientras el menú está abierto
+  }
+
+  menuToggle.addEventListener('click', () => {
+    mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+  });
+  menuOverlay.addEventListener('click', closeMobileMenu);
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
+
+  // Cerrar con tecla Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeMobileMenu(); }
+  });
+
+
+  // ===== 2. NAVEGACIÓN RÁPIDA FLOTANTE =====
+  const quicknavBtn   = document.getElementById('quicknavBtn');
+  const quicknavPanel = document.getElementById('quicknavPanel');
+  const quicknavWrap  = document.getElementById('quicknavWrap');
+
+  quicknavBtn.addEventListener('click', () => {
+    const isOpen = quicknavPanel.classList.toggle('open');
+    quicknavBtn.textContent = isOpen ? '✕' : '☰';
+    quicknavBtn.setAttribute('aria-expanded', isOpen);
+  });
+  quicknavPanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    quicknavPanel.classList.remove('open');
+    quicknavBtn.textContent = '☰';
+  }));
+
+  // El botón flotante aparece solo cuando el hero ya salió de pantalla
+  const heroSection = document.getElementById('inicio');
+  function toggleQuicknavVisibility() {
+    const heroBottom = heroSection.getBoundingClientRect().bottom;
+    quicknavWrap.classList.toggle('hidden', heroBottom > 120);
+  }
+  toggleQuicknavVisibility();
+  window.addEventListener('scroll', toggleQuicknavVisibility, { passive: true });
+
+
+  // ===== 3. RESALTAR SECCIÓN ACTIVA AL HACER SCROLL =====
+  const sections   = document.querySelectorAll('section[id], .hero-section[id]');
+  const allNavLinks = document.querySelectorAll('.nav-link, .quicknav-panel a[href^="#"]');
+
+  function setActiveLink() {
+    let current = sections[0].id;
+    sections.forEach(sec => {
+      if (sec.getBoundingClientRect().top <= 110) current = sec.id;
+    });
+    allNavLinks.forEach(link => {
+      link.classList.toggle('active-link', link.getAttribute('href') === '#' + current);
+    });
+  }
+  setActiveLink();
+  window.addEventListener('scroll', setActiveLink, { passive: true });
+
+
+  // ===== 4. FORMULARIO DE CONTACTO — Formspree =====
+  const FORMSPREE_URL = 'https://formspree.io/f/xnpqqajb';
+
+  const contactForm  = document.getElementById('contactForm');
+  const sendBtn      = document.getElementById('sendBtn');
+  const formSuccess  = document.getElementById('formSuccess');
+
+  const campoNombre  = document.getElementById('contactNombre');
+  const campoCorreo  = document.getElementById('contactCorreo');
+  const campoMensaje = document.getElementById('contactMensaje');
+
+  const errNombre    = document.getElementById('errorNombre');
+  const errCorreo    = document.getElementById('errorCorreo');
+  const errMensaje   = document.getElementById('errorMensaje');
+
+  // Limpiar error visual al corregir
+  [campoNombre, campoCorreo, campoMensaje].forEach(campo => {
+    campo.addEventListener('input', () => {
+      campo.classList.remove('field-error');
+      const errEl = document.getElementById('error' + campo.id.replace('contact',''));
+      if (errEl) errEl.textContent = '';
+    });
+  });
+
+  function validarCorreo(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function mostrarError(campo, errEl, mensaje) {
+    campo.classList.add('field-error');
+    errEl.textContent = mensaje;
+  }
+
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Limpiar errores previos
+    [campoNombre, campoCorreo, campoMensaje].forEach(c => c.classList.remove('field-error'));
+    [errNombre, errCorreo, errMensaje].forEach(el => el.textContent = '');
+
+    const nombre  = campoNombre.value.trim();
+    const correo  = campoCorreo.value.trim();
+    const mensaje = campoMensaje.value.trim();
+
+    // Validación
+    let valido = true;
+    if (!nombre) {
+      mostrarError(campoNombre, errNombre, 'Por favor ingresa tu nombre.');
+      valido = false;
+    }
+    if (!correo) {
+      mostrarError(campoCorreo, errCorreo, 'Por favor ingresa tu correo.');
+      valido = false;
+    } else if (!validarCorreo(correo)) {
+      mostrarError(campoCorreo, errCorreo, 'El correo no tiene un formato válido.');
+      valido = false;
+    }
+    if (!mensaje) {
+      mostrarError(campoMensaje, errMensaje, 'Por favor escribe tu mensaje.');
+      valido = false;
+    }
+    if (!valido) return;
+
+    // Envío a Formspree
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = 'Enviando… ⏳';
+
+    try {
+      const response = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(contactForm)
+      });
+
+      if (response.ok) {
+        // Éxito: ocultar formulario y mostrar confirmación
+        contactForm.style.display = 'none';
+        formSuccess.classList.add('visible');
+        formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        contactForm.reset();
+      } else {
+        const data = await response.json();
+        const msgError = data?.errors?.map(e => e.message).join(', ')
+          || 'Hubo un problema al enviar. Inténtalo de nuevo.';
+        errMensaje.textContent = msgError;
+      }
+    } catch (err) {
+      errMensaje.textContent = 'Sin conexión. Verifica tu internet e inténtalo de nuevo.';
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = 'Enviar &nbsp;✈';
+    }
+  });
+</script>
+
+</body>
+</html>
