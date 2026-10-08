@@ -29,64 +29,10 @@
     background:var(--bg);
     line-height:1.5;
   }
-  section, .hero-section{scroll-margin-top:78px;}
+  section, .hero-section{scroll-margin-top:68px;}
+  .hero-section{padding-top:80px;}
 
-  /* ===== BOTÓN FLOTANTE DE NAVEGACIÓN RÁPIDA ===== */
-  .quicknav-wrap{
-    position:fixed;
-    right:24px;
-    bottom:24px;
-    z-index:60;
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:10px;
-  }
-  .quicknav-panel{
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:14px;
-    box-shadow:0 14px 38px rgba(10,21,53,.22);
-    padding:10px;
-    display:none;
-    flex-direction:column;
-    min-width:200px;
-    overflow:hidden;
-  }
-  .quicknav-panel.open{display:flex;}
-  .quicknav-panel a{
-    padding:10px 14px;
-    border-radius:8px;
-    font-size:.86rem;
-    font-weight:600;
-    color:var(--text-dark);
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  .quicknav-panel a:hover{background:var(--bg); color:var(--blue);}
-  .quicknav-panel a.active-link{color:var(--blue); background:#eaf3fd;}
-  .quicknav-divider{height:1px; background:var(--border); margin:6px 4px;}
-  .quicknav-btn{
-    width:54px;height:54px;
-    border-radius:50%;
-    background:var(--blue);
-    color:#fff;
-    border:none;
-    box-shadow:0 14px 30px rgba(45,143,224,.45);
-    font-size:1.3rem;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    transition:transform .2s ease, opacity .2s ease;
-  }
-  .quicknav-btn:hover{transform:translateY(-2px);}
-  .quicknav-wrap.hidden .quicknav-btn{
-    opacity:0;
-    pointer-events:none;
-    transform:scale(.8);
-  }
+
   h1,h2,h3,h4{font-family:'Poppins',sans-serif;}
   a{text-decoration:none;color:inherit;}
   ul{list-style:none;}
@@ -115,11 +61,34 @@
       radial-gradient(circle at 95% 30%, rgba(27,201,201,.12), transparent 35%);
     pointer-events:none;
   }
+  .navbar-sticky{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(10,21,53,.97);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    box-shadow:0 2px 20px rgba(0,0,0,.3);
+    color:#ffffff;
+  }
+  .navbar-sticky .nav-links a,
+  .navbar-sticky .logo,
+  .navbar-sticky .menu-toggle{
+    color:#ffffff !important;
+  }
+  .navbar-sticky .nav-links a:hover{
+    color:var(--teal) !important;
+  }
+  .navbar-sticky .container-nav{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
   .navbar{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:28px 0 0;
+    padding:16px 0;
     position:relative;
     z-index:2;
   }
@@ -668,12 +637,13 @@
     .hero-card-wrap{justify-content:center; flex-wrap:wrap;}
     .about-grid{grid-template-columns:1fr;}
     .value-cards{grid-template-columns:1fr 1fr;}
-    .service-cards{grid-template-columns:1fr 1fr;}
+    .service-cards{grid-template-columns:1fr 1fr 1fr;}
     .etapas-grid{grid-template-columns:1fr 1fr;}
     .testi-grid{grid-template-columns:1fr;}
     .contact-grid{grid-template-columns:1fr;}
   }
   @media (max-width: 700px){
+    .navbar-sticky .container-nav{padding:0 20px;}
     .nav-links{display:none;}
     .menu-toggle{display:flex;}
     .hero-text h1{font-size:2.1rem;}
@@ -694,8 +664,9 @@
 <body>
 
 <!-- ===== HERO ===== -->
-<div class="hero-section" id="inicio">
-  <div class="container">
+<!-- ===== NAVBAR FIJO ===== -->
+<div class="navbar-sticky">
+  <div class="container-nav">
     <nav class="navbar">
       <div class="logo">
         <span class="logo-icon">✓</span>
@@ -715,7 +686,9 @@
       </button>
     </nav>
   </div>
+</div>
 
+<div class="hero-section" id="inicio">
   <!-- Menú móvil desplegable -->
   <div class="mobile-menu" id="mobileMenu">
     <ul>
@@ -805,9 +778,11 @@
 <section id="servicios" class="services">
   <div class="container">
     <h2 class="section-title center">Servicios</h2>
+    <p style="text-align:center; color:var(--text-muted); font-size:.97rem; max-width:600px; margin:0 auto 36px;">
+      <strong style="color:var(--text-dark);">Asesoría estratégica:</strong> acompañamos a marcas e influencers con estrategias de transparencia alineadas a sus objetivos y audiencias.
+    </p>
     <div class="services-row">
-      <button class="arrow-btn">‹</button>
-      <div class="service-cards">
+      <div class="service-cards" style="grid-template-columns:repeat(3,1fr);">
         <div class="service-card">
           <div class="service-icon">📖</div>
           <h4>Manual para influencers</h4>
@@ -823,13 +798,7 @@
           <h4>Auditoría de campañas</h4>
           <p>Evaluamos campañas de influencer marketing para asegurar cumplimiento, transparencia y coherencia en la comunicación.</p>
         </div>
-        <div class="service-card">
-          <div class="service-icon">💡</div>
-          <h4>Asesoría estratégica</h4>
-          <p>Acompañamos a marcas y influencers con estrategias de transparencia alineadas a sus objetivos y audiencia.</p>
-        </div>
       </div>
-      <button class="arrow-btn">›</button>
     </div>
   </div>
 </section>
@@ -1001,20 +970,7 @@
   </div>
 </footer>
 
-<!-- ===== NAVEGACIÓN RÁPIDA FLOTANTE ===== -->
-<div class="quicknav-wrap" id="quicknavWrap">
-  <div class="quicknav-panel" id="quicknavPanel">
-    <a href="#inicio" class="nav-link">🏠 Inicio</a>
-    <a href="#sobre-nosotros" class="nav-link">ℹ️ Sobre nosotros</a>
-    <a href="#servicios" class="nav-link">🛠️ Servicios</a>
-    <a href="#etapas" class="nav-link">🔢 Etapas</a>
-    <a href="#testimonios" class="nav-link">💬 Testimonios</a>
-    <a href="#contacto" class="nav-link">✉️ Contacto</a>
-    <div class="quicknav-divider"></div>
-    <a href="#inicio" id="backToTop">⬆️ Volver arriba</a>
-  </div>
-  <button class="quicknav-btn" id="quicknavBtn" aria-label="Abrir navegación rápida">☰</button>
-</div>
+
 
 <script>
   /* ================================================
@@ -1053,34 +1009,12 @@
   });
 
 
-  // ===== 2. NAVEGACIÓN RÁPIDA FLOTANTE =====
-  const quicknavBtn   = document.getElementById('quicknavBtn');
-  const quicknavPanel = document.getElementById('quicknavPanel');
-  const quicknavWrap  = document.getElementById('quicknavWrap');
 
-  quicknavBtn.addEventListener('click', () => {
-    const isOpen = quicknavPanel.classList.toggle('open');
-    quicknavBtn.textContent = isOpen ? '✕' : '☰';
-    quicknavBtn.setAttribute('aria-expanded', isOpen);
-  });
-  quicknavPanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    quicknavPanel.classList.remove('open');
-    quicknavBtn.textContent = '☰';
-  }));
-
-  // El botón flotante aparece solo cuando el hero ya salió de pantalla
-  const heroSection = document.getElementById('inicio');
-  function toggleQuicknavVisibility() {
-    const heroBottom = heroSection.getBoundingClientRect().bottom;
-    quicknavWrap.classList.toggle('hidden', heroBottom > 120);
-  }
-  toggleQuicknavVisibility();
-  window.addEventListener('scroll', toggleQuicknavVisibility, { passive: true });
 
 
   // ===== 3. RESALTAR SECCIÓN ACTIVA AL HACER SCROLL =====
   const sections   = document.querySelectorAll('section[id], .hero-section[id]');
-  const allNavLinks = document.querySelectorAll('.nav-link, .quicknav-panel a[href^="#"]');
+  const allNavLinks = document.querySelectorAll('.nav-link');
 
   function setActiveLink() {
     let current = sections[0].id;
